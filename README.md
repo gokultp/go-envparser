@@ -44,9 +44,16 @@ import (
 // Dont forget to do goimport on generated files.
 //go:generate goimports -w goenvdecoder.go
 type GoEnv struct {
-	GoPath string   `env:"GOPATH"`
-	Path   []string `env:"PATH"`
-	GoRoot string   `env:"GOROOT"`
+	Paths  Path
+	GoRoot string `env:"GOROOT"`
+}
+
+//go:generate envparser generate -t Path -f $GOFILE
+// Dont forget to do goimport on generated files.
+//go:generate goimports -w pathdecoder.go
+type Path struct {
+	System []string `env:"PATH"`
+	Go     string   `env:"GOPATH"`
 }
 
 func main() {
@@ -56,6 +63,7 @@ func main() {
 	}
 	fmt.Printf("%#v", env)
 }
+
 ```
 
 Here in the above file I have used go generate flags, will execute all the needed commands( envparser generate && goimports) in a single `go generate` command.
