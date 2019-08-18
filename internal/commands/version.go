@@ -1,7 +1,7 @@
 package commands
 
 import (
-	"github.com/gokultp/envparser/internal/version"
+	"github.com/gokultp/go-envparser/internal/version"
 )
 
 // Version is the Version command

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/gokultp/envparser/internal/generator"
-	"github.com/gokultp/envparser/internal/parser"
+	"github.com/gokultp/go-envparser/internal/generator"
+	"github.com/gokultp/go-envparser/internal/parser"
 )
 
 // Generate is the command doing code generation

@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/gokultp/envparser/pkg/envdecoder"
+	"github.com/gokultp/go-envparser/pkg/envdecoder"
 )
 
 //go:generate envparser generate -t GoEnv -f $GOFILE

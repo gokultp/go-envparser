@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 
-	"github.com/gokultp/envparser/internal/commands"
+	"github.com/gokultp/go-envparser/internal/commands"
 )
 
 func main() {

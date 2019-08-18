@@ -11,7 +11,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/gokultp/envparser/internal/parser"
+	"github.com/gokultp/go-envparser/internal/parser"
 )
 
 // GenerateCode executes the template based on parsed struct data
