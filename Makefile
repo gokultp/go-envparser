@@ -6,9 +6,9 @@ GOAPTH = $(firstword $(subst :, ,${GOPATH}))
 
 build:
 	cd cmd/envparser && go build -ldflags "-s -w \
-	-Xgithub.com/gokultp/envparser/internal/version.Version=${VERSION} \
-	-Xgithub.com/gokultp/envparser/internal/version.MinVersion=`git rev-parse HEAD` \
-	-Xgithub.com/gokultp/envparser/internal/version.BuildTime=`date +%FT%T%z` " \
+	-X github.com/gokultp/envparser/internal/version.Version=${VERSION} \
+	-X github.com/gokultp/envparser/internal/version.MinVersion=`git rev-parse HEAD` \
+	-X github.com/gokultp/envparser/internal/version.BuildTime=`date +%FT%T%z` " \
 	-o ${GOPATH}/bin/envparser
 
 .PHONY:

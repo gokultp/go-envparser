@@ -15,6 +15,9 @@ func init() {
 
 // GetCmd will get command by flags
 func GetCmd(args []string) Command {
+	if len(args) == 0 {
+		return helpCmd
+	}
 	switch args[0] {
 	case "generate":
 		genCmd.ParseFlags(args[1:])

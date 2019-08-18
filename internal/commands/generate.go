@@ -23,21 +23,20 @@ func NewGenerate() *Generate {
 
 // InitFlags will initialize all flags
 func (c *Generate) InitFlags() {
-	c.flags.StringVar(&c.structName, "-t", "", "structure name")
-	c.flags.StringVar(&c.structName, "--type", "", "structure name")
-	c.flags.StringVar(&c.filepath, "-f", "", "file path")
-	c.flags.StringVar(&c.filepath, "--file", "", "file path")
+	c.flags.StringVar(&c.structName, "t", "", "structure name")
+	c.flags.StringVar(&c.structName, "-type", "", "structure name")
+	c.flags.StringVar(&c.filepath, "f", "", "file path")
+	c.flags.StringVar(&c.filepath, "-file", "", "file path")
 }
 
 // ParseFlags will parse given flags
 func (c *Generate) ParseFlags(args []string) {
-	c.ParseFlags(args)
+	c.flags.Parse(args)
 }
 
 // Help prints the help message
 func (Generate) Help() {
 	helpText := `
-	Usage:
 
 	envparser generate -t [--type] <struct name> -f [--file] <file path>
 	
