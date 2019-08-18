@@ -7,6 +7,7 @@ import(
 	"os"
 	"strconv"
 	"strings"
+	"github.com/gokultp/go-envparser/pkg/envdecoder"
 )
 
 func (t *{{.Name }}) DecodeEnv() error {
@@ -15,9 +16,10 @@ func (t *{{.Name }}) DecodeEnv() error {
 }
 
 {{define "decoder" }}
+	{{if (is_builtin .Type) }}
+
 	if {{ varname .Name -}}Str := os.Getenv("{{- .EnvTag -}}"); {{- varname .Name -}}Str != "" {
 
-	{{if (is_builtin .Type) }}
 	{{if or (eq (basetype .Type) "rune") (eq (basetype .Type) "byte")}}
 		{{varname .Name -}} := []{{- .Type -}}({{- varname .Name -}}Str)
 		{{if .IsArray}}
@@ -37,10 +39,14 @@ func (t *{{.Name }}) DecodeEnv() error {
 	{{template "singledecoder" .}}
 	{{end}}
 	{{end }}
-	{{else}}
-	return errors.New("type {{- .Type -}} not supported")
-	{{end}}
 	}
+	{{else}}
+	{{varname .Name -}} := {{- .Type -}}{} 
+	if err := envdecoder.Decode(&{{- varname .Name -}}); err != nil {
+		return errors.New("env Decoder interface is not implemented for type {{ .Type -}}")
+	}
+	{{template "populate" .}}
+	{{end}}
 {{end }}
 
 

@@ -7,5 +7,5 @@ func Decode(val interface{}) error {
 	if t, ok := val.(Decoder); ok {
 		return t.DecodeEnv()
 	}
-	return errors.New("decoder not defined for this type")
+	return errors.New("decoder interface is not implemented for  interface")
 }
