@@ -14,6 +14,7 @@ import (
 	"github.com/gokultp/envparser/internal/parser"
 )
 
+// GenerateCode executes the template based on parsed struct data
 func GenerateCode(typeDef *parser.Type) ([]byte, error) {
 	funcMap := getFuncMap()
 	tmpl, err := template.New("template").Funcs(funcMap).Parse(tmpl)
@@ -33,12 +34,15 @@ func GenerateCode(typeDef *parser.Type) ([]byte, error) {
 	return code, nil
 }
 
+// SaveCode will save the generated code to file
+// Filename format Lowecase(<struct name>decoder.go)
 func SaveCode(typeDef *parser.Type, code []byte) error {
 	fpath := path.Dir(typeDef.FileName)
 	fpath = path.Join(fpath, fmt.Sprintf("%sdecoder.go", strings.ToLower(typeDef.Name)))
 	return ioutil.WriteFile(fpath, code, 0644)
 }
 
+// removeEmptyLines will remove the empty lines generated as part of template execution
 func removeEmptyLines(source []byte) []byte {
 	reg, err := regexp.Compile(`\n\s*\n`)
 	if err != nil {

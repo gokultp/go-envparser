@@ -10,6 +10,7 @@ import (
 	"strings"
 )
 
+// Type is the type defenition struct
 type Type struct {
 	FileName string
 	Name     string
@@ -17,6 +18,7 @@ type Type struct {
 	Package  string
 }
 
+// Field encapsulates the struct field metadata needed for the template execution
 type Field struct {
 	Name      string
 	Type      string
@@ -25,6 +27,7 @@ type Field struct {
 	IsArray   bool
 }
 
+// NewType returns a new instance of Type with given name
 func NewType(name string) *Type {
 	return &Type{
 		Name: name,
@@ -41,6 +44,7 @@ func getStruct(nodeType ast.Node) *ast.StructType {
 	}
 }
 
+// Parse parses Type metadata from given file using go parser & ast
 func (t *Type) Parse(fileName string) error {
 	t.FileName = fileName
 	fset := token.NewFileSet()
@@ -71,6 +75,7 @@ func (t *Type) Parse(fileName string) error {
 	return nil
 }
 
+// getFields will transforms the field metadata returned by go ast to the template's format
 func getFields(node *ast.StructType) []Field {
 	var fields []Field
 	for _, field := range node.Fields.List {
@@ -103,14 +108,17 @@ func getFields(node *ast.StructType) []Field {
 	return fields
 }
 
+// isPointer checks if a given type is a pointer or not
 func isPointer(typeName string) bool {
 	return len(typeName) > 0 && typeName[0] == '*'
 }
 
+// isArray checks is a given type is an array or not
 func isArray(typeName string) bool {
 	return len(typeName) > 2 && typeName[:2] == "[]"
 }
 
+// getEnvSourceTag will says what is ths env variable to be used to fetch the data
 func getEnvSourceTag(tags reflect.StructTag, fieldName string) string {
 	tag, ok := tags.Lookup("env")
 	if !ok {
@@ -119,6 +127,7 @@ func getEnvSourceTag(tags reflect.StructTag, fieldName string) string {
 	return tag
 }
 
+// cleanTypeStr will strip all unwanted space and other characters to return the type name
 func cleanTypeStr(typ string) string {
 	typ = strings.TrimSpace(typ)
 	typ = strings.TrimLeft(typ, "*")

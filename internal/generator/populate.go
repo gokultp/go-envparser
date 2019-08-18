@@ -29,6 +29,7 @@ const (
 	baseFloat      = "float"
 )
 
+// isBuiltInType checks if a given type is a go built-in type or not
 func isBuiltInType(typ string) bool {
 	switch typ {
 	case typeBool, typeByte, typeComplex128, typeComplex64:
@@ -42,6 +43,7 @@ func isBuiltInType(typ string) bool {
 	return true
 }
 
+// parseFunc returns the Parser function needed to be used to Parse a given type from string
 func parseFunc(typ string, arg string) string {
 	base := baseType(typ)
 	switch base {
@@ -67,6 +69,7 @@ func parseFunc(typ string, arg string) string {
 	return ""
 }
 
+// getFuncMap will returns a map of functions that can be used in templates
 func getFuncMap() template.FuncMap {
 	return template.FuncMap{
 		"is_builtin":           isBuiltInType,
