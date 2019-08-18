@@ -82,7 +82,7 @@ func getFields(node *ast.StructType) []Field {
 			fieldType := types.ExprString(field.Type)
 			fields = append(fields, Field{
 				Name:      "",
-				Type:      fieldType,
+				Type:      cleanTypeStr(fieldType),
 				EnvTag:    getEnvSourceTag(tags, fieldType),
 				IsPointer: isPointer(fieldType),
 				IsArray:   isArray(fieldType),
@@ -93,7 +93,7 @@ func getFields(node *ast.StructType) []Field {
 			fieldType := types.ExprString(field.Type)
 			fields = append(fields, Field{
 				Name:      fieldName.Name,
-				Type:      fieldType,
+				Type:      cleanTypeStr(fieldType),
 				IsPointer: isPointer(fieldType),
 				IsArray:   isArray(fieldType),
 				EnvTag:    getEnvSourceTag(tags, fieldName.Name),
@@ -117,4 +117,11 @@ func getEnvSourceTag(tags reflect.StructTag, fieldName string) string {
 		return strings.ToUpper(fieldName)
 	}
 	return tag
+}
+
+func cleanTypeStr(typ string) string {
+	typ = strings.TrimSpace(typ)
+	typ = strings.TrimLeft(typ, "*")
+	typ = strings.TrimLeft(typ, "[]")
+	return typ
 }

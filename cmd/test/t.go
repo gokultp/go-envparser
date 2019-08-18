@@ -1,10 +1,8 @@
 package te
 
-type B struct {
-	A *int `env:"a" json:"a,omitempty"`
-}
-
 type A struct {
-	*B
-	C []string
+	Abc *int   `env:"A"`
+	B   int64  `env:"B"`
+	C   uint   `env:"C"`
+	D   *uint8 `env:"D"`
 }
