@@ -26,10 +26,10 @@ const (
 	typeUInt32     = "uint32"
 	typeUint64     = "uint64"
 	typeUIntPtr    = "uintptr"
+	baseFloat      = "float"
 )
 
 func isBuiltInType(typ string) bool {
-	fmt.Println("hhhhh", typ)
 	switch typ {
 	case typeBool, typeByte, typeComplex128, typeComplex64:
 	case typeFloat32, typeFloat64:
@@ -50,13 +50,19 @@ func parseFunc(typ string, arg string) string {
 		if bits == "" {
 			bits = "32"
 		}
-		return fmt.Sprintf("strconv.ParseInt(_rec%sStr, %d, %s)", arg, 10, bits)
+		return fmt.Sprintf("strconv.ParseInt(%sStr, %d, %s)", varName(arg), 10, bits)
 	case typeUInt:
 		bits := strings.Replace(typ, typeUInt, "", 1)
 		if bits == "" {
 			bits = "32"
 		}
 		return fmt.Sprintf("strconv.ParseInt(%sStr, %d, %s)", varName(arg), 10, bits)
+	case baseFloat:
+		bits := strings.Replace(typ, baseFloat, "", 1)
+		return fmt.Sprintf("strconv.ParseFloat(%sStr, %s)", varName(arg), bits)
+	case typeBool:
+		return fmt.Sprintf("strconv.ParseBool(%sStr)", varName(arg))
+
 	}
 	return ""
 }
@@ -82,11 +88,23 @@ func baseType(typ string) string {
 		return typeInt
 	case typeUInt, typeUInt8, typeUInt16, typeUInt32, typeUint64, typeUIntPtr:
 		return typeUInt
+	case typeFloat32, typeFloat64:
+		return baseFloat
 	default:
 		return typ
 	}
 }
 
-func varName(tag string) string {
-	return fmt.Sprintf("_rec%s", strings.ToTitle(tag))
+func toTitle(str string) string {
+	if str == "" {
+		return ""
+	}
+	str = strings.ToLower(str)
+	if str[0] >= 'a' && str[0] <= 'z' {
+		str = string(str[0]-32) + str[1:]
+	}
+	return str
+}
+func varName(name string) string {
+	return fmt.Sprintf("_rec%s", toTitle(name))
 }

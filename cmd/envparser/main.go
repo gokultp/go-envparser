@@ -1,17 +1,15 @@
 package main
 
 import (
-	"fmt"
+	"flag"
 
-	"github.com/gokultp/envparser/internal/generator"
-	"github.com/gokultp/envparser/internal/parser"
+	"github.com/gokultp/envparser/internal/commands"
 )
 
 func main() {
-	st := parser.NewType("A")
-	st.Parse("/home/gokul/projects/envparser/cmd/test/t.go")
-
-	if err := generator.GenerateCode(st); err != nil {
-		fmt.Println(err)
+	flag.Parse()
+	cmd := commands.GetCmd(flag.Args())
+	if err := cmd.Exec(); err != nil {
+		panic(err)
 	}
 }
