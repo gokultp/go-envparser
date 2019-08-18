@@ -18,15 +18,6 @@ type Type struct {
 	Package  string
 }
 
-// Field encapsulates the struct field metadata needed for the template execution
-type Field struct {
-	Name      string
-	Type      string
-	EnvTag    string
-	IsPointer bool
-	IsArray   bool
-}
-
 // NewType returns a new instance of Type with given name
 func NewType(name string) *Type {
 	return &Type{
@@ -56,7 +47,12 @@ func (t *Type) Parse(fileName string) error {
 	if err != nil {
 		return err
 	}
-	// Look up the AST
+	t.astInspect(f)
+	return nil
+}
+
+// astInspect will inspect the go-ast of the struct and get the meta data
+func (t *Type) astInspect(f *ast.File) {
 	ast.Inspect(f, func(node ast.Node) bool {
 		switch nodeType := node.(type) {
 		case *ast.TypeSpec:
@@ -72,7 +68,6 @@ func (t *Type) Parse(fileName string) error {
 		}
 		return true
 	})
-	return nil
 }
 
 // getFields will transforms the field metadata returned by go ast to the template's format
@@ -85,52 +80,13 @@ func getFields(node *ast.StructType) []Field {
 		}
 		if len(field.Names) == 0 {
 			fieldType := types.ExprString(field.Type)
-			fields = append(fields, Field{
-				Name:      "",
-				Type:      cleanTypeStr(fieldType),
-				EnvTag:    getEnvSourceTag(tags, fieldType),
-				IsPointer: isPointer(fieldType),
-				IsArray:   isArray(fieldType),
-			})
+			fields = append(fields, NewField(nil, fieldType, tags))
 			continue
 		}
 		for _, fieldName := range field.Names {
 			fieldType := types.ExprString(field.Type)
-			fields = append(fields, Field{
-				Name:      fieldName.Name,
-				Type:      cleanTypeStr(fieldType),
-				IsPointer: isPointer(fieldType),
-				IsArray:   isArray(fieldType),
-				EnvTag:    getEnvSourceTag(tags, fieldName.Name),
-			})
+			fields = append(fields, NewField(fieldName, fieldType, tags))
 		}
 	}
 	return fields
-}
-
-// isPointer checks if a given type is a pointer or not
-func isPointer(typeName string) bool {
-	return len(typeName) > 0 && typeName[0] == '*'
-}
-
-// isArray checks is a given type is an array or not
-func isArray(typeName string) bool {
-	return len(typeName) > 2 && typeName[:2] == "[]"
-}
-
-// getEnvSourceTag will says what is ths env variable to be used to fetch the data
-func getEnvSourceTag(tags reflect.StructTag, fieldName string) string {
-	tag, ok := tags.Lookup("env")
-	if !ok {
-		return strings.ToUpper(fieldName)
-	}
-	return tag
-}
-
-// cleanTypeStr will strip all unwanted space and other characters to return the type name
-func cleanTypeStr(typ string) string {
-	typ = strings.TrimSpace(typ)
-	typ = strings.TrimLeft(typ, "*")
-	typ = strings.TrimLeft(typ, "[]")
-	return typ
 }
