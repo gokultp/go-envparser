@@ -2,7 +2,7 @@
 
 ## Overview [![GoDoc](https://godoc.org/github.com/gokultp/go-envparser?status.svg)](https://godoc.org/github.com/gokultp/go-envparser) [![Code Climate](https://codeclimate.com/github/gokultp/go-envparser/badges/gpa.svg)](https://codeclimate.com/github/gokultp/go-envparser) [![Go Report Card](https://goreportcard.com/badge/github.com/gokultp/go-envparser)](https://goreportcard.com/report/github.com/gokultp/go-envparser)
 
-`go-envparser` generates static `DecodeEnv`  functions for structures in Go will implement the interface [Decoder](./pkg/envdecoder/idecoder.go). The generated functions reduce the reliance upon runtime reflection to do serialization.
+`go-envparser` generates static `DecodeEnv`  functions for structures  in Go to decode environment variables,  will implement the interface [Decoder](./pkg/envdecoder/idecoder.go). The generated functions reduce the reliance upon runtime reflection to do serialization.
 
 
 ## Getting Started
@@ -27,7 +27,7 @@ BuildTime : 2019-08-19T00:56:29+0530
 ```bash
 envparser generate -s <structname> -f <filename>
 ```
-it will generate a file with name `<structname> decoder.go`  (Lowercase) consist of a `DecodeEnv` function which will implement the interface  [Decoder](./pkg/envdecoder/idecoder.go).
+It will generate a file with name `<structname>decoder.go`  (Lowercase) consist of a `DecodeEnv` function which will be implementing the interface  [Decoder](./pkg/envdecoder/idecoder.go).
 ### Example 
 
 ```go
