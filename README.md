@@ -4,6 +4,7 @@
 
 `go-envparser` generates static `DecodeEnv`  functions for structures  in Go to decode environment variables,  will implement the interface [Decoder](./pkg/envdecoder/idecoder.go). The generated functions reduce the reliance upon runtime reflection to do serialization.
 
+![Alt Text](https://steemitimages.com/0x0/https://huntimages.s3.us-west-2.amazonaws.com/production/steemhunt/2018-09-01/8ba9f690-gomodifytags.gif)
 
 ## Getting Started
 
