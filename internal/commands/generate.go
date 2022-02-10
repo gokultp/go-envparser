@@ -24,9 +24,9 @@ func NewGenerate() *Generate {
 // InitFlags will initialize all flags
 func (c *Generate) InitFlags() {
 	c.flags.StringVar(&c.structName, "t", "", "structure name")
-	c.flags.StringVar(&c.structName, "-type", "", "structure name")
+	c.flags.StringVar(&c.structName, "type", "", "structure name")
 	c.flags.StringVar(&c.filepath, "f", "", "file path")
-	c.flags.StringVar(&c.filepath, "-file", "", "file path")
+	c.flags.StringVar(&c.filepath, "file", "", "file path")
 }
 
 // ParseFlags will parse given flags
